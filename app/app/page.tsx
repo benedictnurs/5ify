@@ -30,7 +30,7 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-import NavBar from "@/components/ui/NavBar";
+import NavBar from "@/components/ui/navbar";
 
 interface Task {
   _id: string;
@@ -352,7 +352,7 @@ export default function Component() {
   };
 
   return (
-    <div className="min-h-screen px-6">
+    <div className="min-h-screen">
       <NavBar/>
       <div className="max-w-4xl mx-auto  rounded-lg shadow-md p-6 mt-10 border">
         <h1 className="text-2xl font-medium mb-6">
