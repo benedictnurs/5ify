@@ -30,7 +30,7 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-import NavBar from "@/components/ui/navbar";
+import NavBar from "@/components/navbar";
 
 interface Task {
   _id: string;
