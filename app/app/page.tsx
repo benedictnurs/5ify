@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Dialog,
   DialogContent,
@@ -334,6 +335,7 @@ export default function Component() {
           )}
         </div>
       </div>
+      
       {!task.collapsed && task.subtasks.length > 0 && (
         <ul className="mt-2">
           {task.subtasks.map((subtask) => renderTask(subtask, task._id))}
@@ -385,10 +387,11 @@ export default function Component() {
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
+            <ScrollArea className="h-[400px] pr-4">
             <ul className="space-y-4">
               {tasks.map((task) => renderTask(task))}
             </ul>
-
+            </ScrollArea>
             <Dialog
               open={breakdownTask !== null}
               onOpenChange={() => setBreakdownTask(null)}
@@ -443,9 +446,11 @@ export default function Component() {
                     {isCopied ? "Copied!" : "Copy"}
                   </Button>
                 </div>
-                <pre className="p-4 rounded-md overflow-x-auto">
-                  {getFormattedData()}
-                </pre>
+                <ScrollArea className="h-[200px] bg-transparent">
+                <pre className="p-4 rounded-md">
+                {getFormattedData()}
+              </pre>
+            </ScrollArea>
               </CollapsibleContent>
             </Collapsible>
           </div>
