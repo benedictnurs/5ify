@@ -233,7 +233,7 @@ export default function Component() {
     <li
       key={task._id}
       className={`mb-2 ${
-        parentId !== undefined ? "ml-6 border-l-2 border-gray-300 pl-4" : ""
+        parentId !== undefined ? "ml-6 border-l-2 border-gray-300" : ""
       }`}
     >
       <div className="flex items-center justify-between p-2 rounded border">
@@ -278,7 +278,7 @@ export default function Component() {
             </Label>
           )}
         </div>
-        <div className="flex items-center ml-3">
+        <div className="flex items-center">
           {editingTask?._id === task._id ? (
             <>
               <Button
