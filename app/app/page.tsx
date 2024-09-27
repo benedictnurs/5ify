@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import {
   Dialog,
   DialogContent,
@@ -264,7 +264,7 @@ export default function Component() {
             <Input
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
-              className="ml-2 flex-grow"
+              className="mx-4 flex-grow"
               autoFocus
             />
           ) : (
@@ -278,7 +278,7 @@ export default function Component() {
             </Label>
           )}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center ml-3">
           {editingTask?._id === task._id ? (
             <>
               <Button
@@ -335,7 +335,7 @@ export default function Component() {
           )}
         </div>
       </div>
-      
+
       {!task.collapsed && task.subtasks.length > 0 && (
         <ul className="mt-2">
           {task.subtasks.map((subtask) => renderTask(subtask, task._id))}
@@ -371,11 +371,11 @@ export default function Component() {
           className="relative "
         >
           {" "}
-          <div className="max-w-4xl mx-auto rounded-lg shadow-md p-6 mt-10 border backdrop-blur-xl dark:bg-zinc-900/40">
-            <h1 className="text-2xl font-medium mb-6">
+          <div className="max-w-4xl sm:mx-5  md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 border backdrop-blur-xl dark:bg-zinc-900/40">
+           {/* <h1 className="text-2xl font-medium mb-6">
               Any task in less than 5 steps...
             </h1>
-            <div className="flex mb-6">
+           */} <div className="flex mb-6">
               <Input
                 type="text"
                 value={newTask}
@@ -387,10 +387,10 @@ export default function Component() {
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            <ScrollArea className="h-[400px] pr-4">
-            <ul className="space-y-4">
-              {tasks.map((task) => renderTask(task))}
-            </ul>
+            <ScrollArea className="sm:h-[400px] h-[300px] pr-4">
+              <ul className="space-y-4">
+                {tasks.map((task) => renderTask(task))}
+              </ul>
             </ScrollArea>
             <Dialog
               open={breakdownTask !== null}
@@ -446,11 +446,14 @@ export default function Component() {
                     {isCopied ? "Copied!" : "Copy"}
                   </Button>
                 </div>
-                <ScrollArea className="h-[200px] bg-transparent">
-                <pre className="p-4 rounded-md">
-                {getFormattedData()}
-              </pre>
-            </ScrollArea>
+                <ScrollArea className="h-[200px] w-full overflow-auto bg-transparent">
+  <p className="p-4 rounded-md w-full overflow-x-auto font-mono whitespace-pre">
+    {getFormattedData()}
+  </p>
+  <ScrollBar orientation="horizontal" />
+
+</ScrollArea>
+
               </CollapsibleContent>
             </Collapsible>
           </div>
