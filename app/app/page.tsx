@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-
+import axios from 'axios';
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,20 +43,17 @@ interface Task {
   collapsed: boolean;
 }
 
-const generateSubtasks = (task: string, count: number): string[] => {
-  const subtasks = [
-    `Research best practices for ${task}`,
-    `Create a detailed plan for ${task}`,
-    `Gather necessary resources for ${task}`,
-    `Execute the first phase of ${task}`,
-    `Review and adjust approach to ${task}`,
-    `Collaborate with team members on ${task}`,
-    `Implement core functionality of ${task}`,
-    `Test and debug ${task}`,
-    `Document progress and learnings from ${task}`,
-    `Finalize and polish ${task}`,
-  ];
-  return subtasks.sort(() => 0.5 - Math.random()).slice(0, count);
+const generateSubtasks = async (task: string, count: number): Promise<string[]> => {
+  try {
+    // Send a POST request to the backend API
+    const response = await axios.post('/api/generate-subtasks', { task, count });
+    
+    // Extract subtasks from the response
+    return response.data.subtasks;
+  } catch (error) {
+    console.error('Error generating subtasks:', error);
+    return [];
+  }
 };
 
 export default function Component() {
@@ -156,31 +153,39 @@ export default function Component() {
     setSubtaskCount(Math.min(5 - task.subtasks.length, 3));
   };
 
-  const addGeneratedSubtasks = () => {
+  const addGeneratedSubtasks = async () => {
     if (breakdownTask) {
-      const newSubtasks = generateSubtasks(
-        breakdownTask.text,
-        subtaskCount
-      ).map((subtask) => ({
-        _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-        text: subtask,
-        completed: false,
-        subtasks: [],
-        collapsed: false,
-      }));
-      setTasks(
-        tasks.map((task) =>
-          task._id === breakdownTask._id
-            ? {
-                ...task,
-                subtasks: [...task.subtasks, ...newSubtasks].slice(0, 5),
-              }
-            : task
-        )
-      );
-      setBreakdownTask(null);
+      try {
+        // Await the asynchronous generateSubtasks function
+        const newSubtasks = await generateSubtasks(breakdownTask.text, subtaskCount);
+  
+        // Map the received subtasks to your task structure
+        const formattedSubtasks = newSubtasks.map((subtask) => ({
+          _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          text: subtask,
+          completed: false,
+          subtasks: [],
+          collapsed: false,
+        }));
+  
+        // Update the tasks state with the new subtasks
+        setTasks(
+          tasks.map((task) =>
+            task._id === breakdownTask._id
+              ? {
+                  ...task,
+                  subtasks: [...task.subtasks, ...formattedSubtasks].slice(0, 5),
+                }
+              : task
+          )
+        );
+        setBreakdownTask(null);
+      } catch (error) {
+        console.error('Error adding generated subtasks:', error);
+      }
     }
   };
+  
 
   const startEditing = (taskId: string, parentId?: string) => {
     setEditingTask({ _id: taskId, parentId });
