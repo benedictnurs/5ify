@@ -1,34 +1,71 @@
-<a href="https://your-app-link.com">
-  <img alt="AI Task Breakdown" src="public/_static/og.jpg">
-  <h1 align="center">AI Task Breakdown App</h1>
+<a href="https://5ify.vercel.app/">
+  <h1 align="center">5ify</h1>
 </a>
 
 <p align="center">
-  Supercharge your productivity with AI-powered task breakdown!
+  According to experts, anyone can complete a task if broken down into around 5 steps. Source? I'm the expert.
 </p>
 
-<p align="center">
-  <a href="https://twitter.com/your-twitter-handle">
-    <img src="https://img.shields.io/twitter/follow/your-twitter-handle?style=flat&label=your-twitter-handle&logo=twitter&color=0bf&logoColor=fff" alt="Twitter follower count" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="#introduction"><strong>Introduction</strong></a> ·
-  <a href="#installation"><strong>Installation</strong></a> ·
-  <a href="#tech-stack--features"><strong>Tech Stack + Features</strong></a> ·
-  <a href="#author"><strong>Author</strong></a> ·
-  <a href="#credits"><strong>Credits</strong></a>
-</p>
 <br/>
 
 ## Introduction
 
-Unlock the power of AI to help you break down complex tasks into manageable subtasks, allowing you to stay organized and efficient. Powered by the latest technologies like **Next.js**, **shadcn**, **MongoDB**, **Clerk**, and **TypeScript**, this app provides a seamless experience for task management with automated AI-driven insights.
+Empower your tasks with the stack of Next.js 14, MongoDB, Clerk, Google Gemini and Shadcn/ui.
+<br/>
+All seamlessly integrated with 5ify to streamline tasks.
 
 ## Installation
 
-Clone & create this repo locally with the following command:
+1. Install dependencies using npm:
 
-```bash
-npx create-next-app my-task-ai --example "https://github.com/your-repo/ai-task-breakdown"
+```sh
+npm install
+```
+
+2. Setup `.env.local` and update the variables for MongoDB and Clerk.
+
+```sh
+cp .env.example .env.local
+```
+
+3. Start the development server:
+
+```sh
+npm run dev
+```
+
+> [!NOTE]  
+> I use [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) package for update this project.
+>
+
+
+### Frameworks
+
+- [Next.js](https://nextjs.org/) – React framework for building performant apps with the best developer experience
+- [Clerk](https://clerk.com/) – Handle user authentication with ease with providers like Google, Twitter, GitHub, etc.
+- [MongoDB](https://www.mongodb.com/) – Database to store user data securely.
+
+### Platforms
+
+- [Vercel](https://vercel.com/) – Easily preview & deploy changes with git
+
+### UI
+
+- [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development
+- [Shadcn/ui](https://ui.shadcn.com/) – Re-usable components built using Radix UI and Tailwind CSS
+- [Framer Motion](https://framer.com/motion) – Motion library for React to animate components with ease
+- [Lucide](https://lucide.dev/) – Beautifully simple, pixel-perfect icons
+
+### Code Quality
+
+- [TypeScript](https://www.typescriptlang.org/) – Static type checker for end-to-end typesafety
+- [Prettier](https://prettier.io/) – Opinionated code formatter for consistent code style
+- [ESLint](https://eslint.org/) – Pluggable linter for Next.js and TypeScript
+
+### Miscellaneous
+
+- [Vercel Analytics](https://vercel.com/analytics) – Track unique visitors, pageviews, and more in a privacy-friendly way
+
+## Author
+
+Created by [Benedict Nursalim](https://www.linkedin.com/in/benedict-nursalim/).
