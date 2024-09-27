@@ -371,7 +371,7 @@ export default function Component() {
           className="relative "
         >
           {" "}
-          <div className="max-w-4xl sm:mx-5  md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 border backdrop-blur-xl dark:bg-zinc-900/40">
+          <div className="max-w-4xl sm:mx-5  md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 backdrop-blur-xl dark:bg-zinc-900/40">
            {/* <h1 className="text-2xl font-medium mb-6">
               Any task in less than 5 steps...
             </h1>
