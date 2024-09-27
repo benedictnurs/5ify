@@ -1,4 +1,5 @@
 "use client";
+import { motion } from "framer-motion";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ import {
   Check,
 } from "lucide-react";
 import NavBar from "@/components/ui/navbar";
+import { AuroraBackground } from "@/components/ui/aurora-background";
 
 interface Task {
   _id: string;
@@ -353,82 +355,102 @@ export default function Component() {
 
   return (
     <div className="min-h-screen">
-      <NavBar/>
-      <div className="max-w-4xl mx-auto  rounded-lg shadow-md p-6 mt-10 border">
-        <h1 className="text-2xl font-medium mb-6">
-          Any task in less than 5 steps...
-        </h1>
-        <div className="flex mb-6">
-          <Input
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            placeholder="Add a new task"
-            className="flex-grow mr-2"
-          />
-          <Button onClick={addTask} size="icon" title="Add task">
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-        <ul className="space-y-4">{tasks.map((task) => renderTask(task))}</ul>
+      <AuroraBackground>
+        <NavBar />
 
-        <Dialog
-          open={breakdownTask !== null}
-          onOpenChange={() => setBreakdownTask(null)}
+        <motion.div
+          initial={{ opacity: 0.0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="relative "
         >
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Break down: {breakdownTask?.text}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <Label>Number of subtasks:</Label>
-              <Slider
-                min={1}
-                max={5 - (breakdownTask?.subtasks.length || 0)}
-                step={1}
-                value={[subtaskCount]}
-                onValueChange={(value) => setSubtaskCount(value[0])}
+          {" "}
+          <div className="max-w-4xl mx-auto rounded-lg shadow-md p-6 mt-10 border backdrop-blur-xl dark:bg-zinc-900/40">
+            <h1 className="text-2xl font-medium mb-6">
+              Any task in less than 5 steps...
+            </h1>
+            <div className="flex mb-6">
+              <Input
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                placeholder="Add a new task"
+                className="flex-grow mr-2"
               />
-              <div className="text-center">{subtaskCount}</div>
-            </div>
-            <DialogFooter>
-              <Button onClick={addGeneratedSubtasks}>Generate</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
-        <Collapsible
-          open={isJsonOpen}
-          onOpenChange={setIsJsonOpen}
-          className="mt-8 border rounded-md"
-        >
-          <CollapsibleTrigger asChild>
-            <Button variant="outline" className="flex justify-between w-full">
-              <span>View JSON Data</span>
-              {isJsonOpen ? (
-                <ChevronUp className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="p-4">
-            <div className="flex justify-end mb-2">
-              <Button onClick={copyToClipboard} variant="outline" size="sm">
-                {isCopied ? (
-                  <Check className="h-4 w-4 mr-2" />
-                ) : (
-                  <Copy className="h-4 w-4 mr-2" />
-                )}
-                {isCopied ? "Copied!" : "Copy"}
+              <Button onClick={addTask} size="icon" title="Add task">
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
-            <pre className="p-4 rounded-md overflow-x-auto">
-              {getFormattedData()}
-            </pre>
-          </CollapsibleContent>
-        </Collapsible>
-      </div>
+            <ul className="space-y-4">
+              {tasks.map((task) => renderTask(task))}
+            </ul>
+
+            <Dialog
+              open={breakdownTask !== null}
+              onOpenChange={() => setBreakdownTask(null)}
+            >
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Break down: {breakdownTask?.text}</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <Label>Number of subtasks:</Label>
+                  <Slider
+                    min={1}
+                    max={5 - (breakdownTask?.subtasks.length || 0)}
+                    step={1}
+                    value={[subtaskCount]}
+                    onValueChange={(value) => setSubtaskCount(value[0])}
+                  />
+                  <div className="text-center">{subtaskCount}</div>
+                </div>
+                <DialogFooter>
+                  <Button onClick={addGeneratedSubtasks}>Generate</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Collapsible
+              open={isJsonOpen}
+              onOpenChange={setIsJsonOpen}
+              className="mt-8 border rounded-md"
+            >
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="flex justify-between w-full"
+                >
+                  <span>View JSON Data</span>
+                  {isJsonOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="p-4">
+                <div className="flex justify-end mb-2">
+                  <Button onClick={copyToClipboard} variant="outline" size="sm">
+                    {isCopied ? (
+                      <Check className="h-4 w-4 mr-2" />
+                    ) : (
+                      <Copy className="h-4 w-4 mr-2" />
+                    )}
+                    {isCopied ? "Copied!" : "Copy"}
+                  </Button>
+                </div>
+                <pre className="p-4 rounded-md overflow-x-auto">
+                  {getFormattedData()}
+                </pre>
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+        </motion.div>
+      </AuroraBackground>
     </div>
   );
 }
