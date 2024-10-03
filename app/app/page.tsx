@@ -108,14 +108,26 @@ const TaskManager: React.FC = () => {
     setSubtaskCount(Math.min(5 - task.subtasks.length, 3));
   };
 
+  
   const addGeneratedSubtasks = async () => {
     if (breakdownTask) {
       try {
+        // Concatenate existing subtasks' texts into the subtaskFlatten string
+        const existingSubtaskTexts = breakdownTask.subtasks.map(
+          (subtask) => subtask.text
+        ).join(" ");
+  
+        // Combine existing subtasks with the new subtaskFlatten string
+        const combinedSubtaskFlatten = `${existingSubtaskTexts}`;
+  
+        // Pass the combined subtasks to the generateSubtasks function
         const newSubtasks = await generateSubtasks(
+          combinedSubtaskFlatten,
           breakdownTask.text,
           subtaskCount
         );
-
+  
+        // Format the newly generated subtasks
         const formattedSubtasks = newSubtasks.map((subtask) => ({
           _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
           text: subtask,
@@ -123,26 +135,27 @@ const TaskManager: React.FC = () => {
           subtasks: [],
           collapsed: false,
         }));
-
+  
+        // Update the tasks with the newly generated subtasks, ensuring no more than 5 subtasks in total
         setTasks(
           tasks.map((task) =>
             task._id === breakdownTask._id
               ? {
                   ...task,
-                  subtasks: [...task.subtasks, ...formattedSubtasks].slice(
-                    0,
-                    5
-                  ),
+                  subtasks: [...task.subtasks, ...formattedSubtasks].slice(0, 5),
                 }
               : task
           )
         );
+  
+        // Reset breakdown task
         setBreakdownTask(null);
       } catch (error) {
         console.error("Error adding generated subtasks:", error);
       }
     }
   };
+  
 
   const startEditing = (taskId: string, parentId?: string) => {
     setEditingTask({ _id: taskId, parentId });

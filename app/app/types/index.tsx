@@ -1,5 +1,3 @@
-// /types/index.ts
-
 export interface Task {
     _id: string;
     text: string;
@@ -9,6 +7,7 @@ export interface Task {
   }
   
   export const generateSubtasks = async (
+    subtaskFlatten: string,
     task: string,
     count: number
   ): Promise<string[]> => {
@@ -16,7 +15,7 @@ export interface Task {
       const response = await fetch('/api/generate-subtasks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task, count }),
+        body: JSON.stringify({ task, subtaskFlatten , count }),
       });
   
       if (!response.ok) {
