@@ -1,12 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
-import axios from 'axios';
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
@@ -43,15 +43,21 @@ interface Task {
   collapsed: boolean;
 }
 
-const generateSubtasks = async (task: string, count: number): Promise<string[]> => {
+const generateSubtasks = async (
+  task: string,
+  count: number
+): Promise<string[]> => {
   try {
     // Send a POST request to the backend API
-    const response = await axios.post('/api/generate-subtasks', { task, count });
-    
+    const response = await axios.post("/api/generate-subtasks", {
+      task,
+      count,
+    });
+
     // Extract subtasks from the response
     return response.data.subtasks;
   } catch (error) {
-    console.error('Error generating subtasks:', error);
+    console.error("Error generating subtasks:", error);
     return [];
   }
 };
@@ -157,8 +163,11 @@ export default function Component() {
     if (breakdownTask) {
       try {
         // Await the asynchronous generateSubtasks function
-        const newSubtasks = await generateSubtasks(breakdownTask.text, subtaskCount);
-  
+        const newSubtasks = await generateSubtasks(
+          breakdownTask.text,
+          subtaskCount
+        );
+
         // Map the received subtasks to your task structure
         const formattedSubtasks = newSubtasks.map((subtask) => ({
           _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -167,25 +176,27 @@ export default function Component() {
           subtasks: [],
           collapsed: false,
         }));
-  
+
         // Update the tasks state with the new subtasks
         setTasks(
           tasks.map((task) =>
             task._id === breakdownTask._id
               ? {
                   ...task,
-                  subtasks: [...task.subtasks, ...formattedSubtasks].slice(0, 5),
+                  subtasks: [...task.subtasks, ...formattedSubtasks].slice(
+                    0,
+                    5
+                  ),
                 }
               : task
           )
         );
         setBreakdownTask(null);
       } catch (error) {
-        console.error('Error adding generated subtasks:', error);
+        console.error("Error adding generated subtasks:", error);
       }
     }
   };
-  
 
   const startEditing = (taskId: string, parentId?: string) => {
     setEditingTask({ _id: taskId, parentId });
@@ -377,10 +388,11 @@ export default function Component() {
         >
           {" "}
           <div className="max-w-4xl sm:mx-5  md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 backdrop-blur-xl dark:bg-zinc-900/40">
-           {/* <h1 className="text-2xl font-medium mb-6">
+            {/* <h1 className="text-2xl font-medium mb-6">
               Any task in less than 5 steps...
             </h1>
-           */} <div className="flex mb-6">
+           */}{" "}
+            <div className="flex mb-6">
               <Input
                 type="text"
                 value={newTask}
@@ -421,7 +433,6 @@ export default function Component() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-
             <Collapsible
               open={isJsonOpen}
               onOpenChange={setIsJsonOpen}
@@ -452,13 +463,11 @@ export default function Component() {
                   </Button>
                 </div>
                 <ScrollArea className="h-[200px] w-full overflow-auto bg-transparent">
-  <p className="p-4 rounded-md w-full overflow-x-auto font-mono whitespace-pre">
-    {getFormattedData()}
-  </p>
-  <ScrollBar orientation="horizontal" />
-
-</ScrollArea>
-
+                  <p className="p-4 rounded-md w-full overflow-x-auto font-mono whitespace-pre">
+                    {getFormattedData()}
+                  </p>
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
               </CollapsibleContent>
             </Collapsible>
           </div>
