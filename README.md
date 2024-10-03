@@ -16,17 +16,20 @@ All seamlessly integrated with 5ify to streamline tasks.
 
 ## Installation
 
-1. Install dependencies using npm:
+1. Install dependencies using npm or pnpm:
 
 ```sh
 npm install
 ```
 
-2. Setup `.env.local` and update the variables for MongoDB and Clerk.
+2. Setup `.env.local` and update the variables for MongoDB, Clerk, and Gemini.
 
 ```sh
-cp .env.example .env.local
+.env.example.txt -> .env.local
 ```
+Also, set up a Clerk account and connect Webhooks.
+- [Clerk Sync](https://clerk.com/docs/users/sync-data-to-your-backend) – Clerk sync webhooks follow directions and use NGROK for local testing
+- (If you want to deploy to Vercel turn off Vercel Authentication to allow webhook connection, and Caching to prevent dead UI)
 
 3. Start the development server:
 
