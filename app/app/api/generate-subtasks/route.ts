@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     const model = googleAI('gemini-1.5-pro');
 
-    const prompt = `Create a list of ${count} detailed subtasks for the main task: "${task}". Ensure each subtask is clear and actionable. Return the subtasks as a JSON array of strings. VERY IMPORTANT DO NOT RETURN ASTERISKS IN ANY CASE AND DO NOT NUMBER!!!!`;
+    const prompt = `STRICTLY FOLLOW THESE DIRECTIONS LIKE YOUR LIFE DEPENDS ON IT. Create a list of ${count} brief but super detailed and concise subtasks for the main task: "${task}". Ensure each subtask is clear and actionable. Return the subtasks as a JSON array of strings. VERY IMPORTANT DO NOT RETURN ASTERISKS IN ANY CASE AND DO NOT NUMBER!!!!`;
 
     console.log('AI Prompt:', prompt);
 

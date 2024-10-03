@@ -26,21 +26,21 @@ const TaskManager: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([
     {
       _id: "1",
-      text: "Design new website layout",
+      text: "Design new website layout.",
       completed: false,
       subtasks: [],
       collapsed: false,
     },
     {
       _id: "2",
-      text: "Implement user authentication",
+      text: "Implement user authentication.",
       completed: false,
       subtasks: [],
       collapsed: false,
     },
     {
       _id: "3",
-      text: "Create content management system",
+      text: "Create content management system.",
       completed: false,
       subtasks: [],
       collapsed: false,

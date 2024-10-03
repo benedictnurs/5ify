@@ -55,7 +55,7 @@ const BreakdownDialog: React.FC<BreakdownDialogProps> = ({
           <DialogTitle>Break down: {task.text}</DialogTitle>
         </DialogHeader>
         <DialogDescription id="breakdown-dialog-description">
-          Adjust the number of subtasks you want to generate for the selected task.
+          Adjust the number of subtasks.
         </DialogDescription>
         <div className="space-y-4">
           <Label>Number of subtasks:</Label>
