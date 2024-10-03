@@ -25,7 +25,7 @@ npm install
 2. Setup `.env.local` and update the variables for MongoDB, Clerk, and Gemini.
 
 ```sh
-.env.example.txt -> .env.local
+env.example.txt -> .env.local
 ```
 Also, set up a Clerk account and connect Webhooks.
 - [Clerk Sync](https://clerk.com/docs/users/sync-data-to-your-backend) – Clerk sync webhooks follow directions and use NGROK for local testing
