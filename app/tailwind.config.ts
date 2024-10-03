@@ -56,6 +56,7 @@ const config: Config = {
       },
       animation: {
         aurora: "aurora 60s linear infinite",
+        'caret-blink': 'caret-blink 1.25s ease-out infinite', // Added from the first config
       },
       keyframes: {
         aurora: {
@@ -65,6 +66,10 @@ const config: Config = {
           to: {
             backgroundPosition: "350% 50%, 350% 50%",
           },
+        },
+        'caret-blink': { // Added from the first config
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
         },
       },
       borderRadius: {
