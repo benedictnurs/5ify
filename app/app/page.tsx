@@ -1,68 +1,17 @@
 "use client";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Plus,
-  Trash2,
-  SplitSquareVertical,
-  Edit2,
-  ChevronRight,
-  ChevronDown,
-  ChevronUp,
-  Loader2,
-  Copy,
-  Check,
-} from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import NavBar from "@/components/ui/navbar";
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import AddTask from "@/components/task/AddTask";
+import TaskList from "@/components/task/TaskList";
+import BreakdownDialog from "@/components/task/BreakdownDialog";
+import JsonViewer from "@/components/task/JsonViewer";
+import { Task, generateSubtasks } from "@/app/types";
 
-interface Task {
-  _id: string;
-  text: string;
-  completed: boolean;
-  subtasks: Task[];
-  collapsed: boolean;
-}
-
-const generateSubtasks = async (
-  task: string,
-  count: number
-): Promise<string[]> => {
-  try {
-    // Send a POST request to the backend API
-    const response = await axios.post("/api/generate-subtasks", {
-      task,
-      count,
-    });
-
-    // Extract subtasks from the response
-    return response.data.subtasks;
-  } catch (error) {
-    console.error("Error generating subtasks:", error);
-    return [];
-  }
-};
-
-export default function Component() {
+const TaskManager: React.FC = () => {
   const [newTask, setNewTask] = useState("");
   const [breakdownTask, setBreakdownTask] = useState<Task | null>(null);
   const [subtaskCount, setSubtaskCount] = useState(3);
@@ -146,11 +95,11 @@ export default function Component() {
                 ),
               };
             }
-            return task;
+            return null;
           }
           return task;
         })
-        .filter((task) => task._id !== taskId || subtaskId !== undefined)
+        .filter((task) => task !== null) as Task[]
     );
   };
 
@@ -162,13 +111,11 @@ export default function Component() {
   const addGeneratedSubtasks = async () => {
     if (breakdownTask) {
       try {
-        // Await the asynchronous generateSubtasks function
         const newSubtasks = await generateSubtasks(
           breakdownTask.text,
           subtaskCount
         );
 
-        // Map the received subtasks to your task structure
         const formattedSubtasks = newSubtasks.map((subtask) => ({
           _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
           text: subtask,
@@ -177,7 +124,6 @@ export default function Component() {
           collapsed: false,
         }));
 
-        // Update the tasks state with the new subtasks
         setTasks(
           tasks.map((task) =>
             task._id === breakdownTask._id
@@ -245,121 +191,6 @@ export default function Component() {
     );
   };
 
-  const renderTask = (task: Task, parentId?: string) => (
-    <li
-      key={task._id}
-      className={`mb-2 ${
-        parentId !== undefined ? "ml-6 border-l-2 border-gray-300" : ""
-      }`}
-    >
-      <div className="flex items-center justify-between p-2 rounded border">
-        <div className="flex items-center flex-grow">
-          {!parentId && task.subtasks.length > 0 && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => toggleCollapse(task._id)}
-              className="mr-2"
-              title={task.collapsed ? "Expand" : "Collapse"}
-            >
-              {task.collapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronDown className="h-4 w-4" />
-              )}
-            </Button>
-          )}
-          <Checkbox
-            checked={task.completed}
-            onCheckedChange={() =>
-              toggleTask(parentId || task._id, parentId ? task._id : undefined)
-            }
-            id={`task-${task._id}`}
-          />
-          {editingTask?._id === task._id ? (
-            <Input
-              value={editText}
-              onChange={(e) => setEditText(e.target.value)}
-              className="mx-4 flex-grow"
-              autoFocus
-            />
-          ) : (
-            <Label
-              htmlFor={`task-${task._id}`}
-              className={`ml-2 flex-grow ${
-                task.completed ? "line-through text-gray-500" : ""
-              }`}
-            >
-              {task.text}
-            </Label>
-          )}
-        </div>
-        <div className="flex items-center">
-          {editingTask?._id === task._id ? (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={saveEdit}
-                title="Save"
-              >
-                <Check className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={cancelEdit}
-                title="Cancel"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => startEditing(task._id, parentId)}
-                title="Edit task"
-              >
-                <Edit2 className="h-4 w-4" />
-              </Button>
-              {!parentId && task.subtasks.length < 5 && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => openBreakdownModal(task)}
-                  title="Break down task"
-                >
-                  <SplitSquareVertical className="h-4 w-4" />
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() =>
-                  removeTask(
-                    parentId || task._id,
-                    parentId ? task._id : undefined
-                  )
-                }
-                title="Remove task"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
-
-      {!task.collapsed && task.subtasks.length > 0 && (
-        <ul className="mt-2">
-          {task.subtasks.map((subtask) => renderTask(subtask, task._id))}
-        </ul>
-      )}
-    </li>
-  );
-
   const getFormattedData = () => {
     return JSON.stringify(tasks, null, 2);
   };
@@ -375,7 +206,6 @@ export default function Component() {
     <div className="min-h-screen">
       <AuroraBackground>
         <NavBar />
-
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -384,95 +214,52 @@ export default function Component() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="relative "
+          className="relative"
         >
-          {" "}
-          <div className="max-w-4xl sm:mx-5  md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 backdrop-blur-xl dark:bg-zinc-900/40">
-            {/* <h1 className="text-2xl font-medium mb-6">
-              Any task in less than 5 steps...
-            </h1>
-           */}{" "}
-            <div className="flex mb-6">
-              <Input
-                type="text"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                placeholder="Add a new task"
-                className="flex-grow mr-2"
-              />
-              <Button onClick={addTask} size="icon" title="Add task">
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
+          <div className="max-w-4xl sm:mx-5 md:mx-5 mx-5 lg:mx-auto rounded-lg shadow-md p-6 mt-10 backdrop-blur-xl dark:bg-zinc-900/40">
+            <AddTask
+              newTask={newTask}
+              setNewTask={setNewTask}
+              addTask={addTask}
+            />
+
             <ScrollArea className="sm:h-[400px] h-[300px] pr-4">
-              <ul className="space-y-4">
-                {tasks.map((task) => renderTask(task))}
-              </ul>
+              <TaskList
+                tasks={tasks}
+                toggleTask={toggleTask}
+                removeTask={removeTask}
+                startEditing={startEditing}
+                editingTask={editingTask}
+                editText={editText}
+                setEditText={setEditText}
+                saveEdit={saveEdit}
+                cancelEdit={cancelEdit}
+                toggleCollapse={toggleCollapse}
+                openBreakdownModal={openBreakdownModal}
+              />
             </ScrollArea>
-            <Dialog
+
+            <BreakdownDialog
               open={breakdownTask !== null}
-              onOpenChange={() => setBreakdownTask(null)}
-            >
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Break down: {breakdownTask?.text}</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <Label>Number of subtasks:</Label>
-                  <Slider
-                    min={1}
-                    max={5 - (breakdownTask?.subtasks.length || 0)}
-                    step={1}
-                    value={[subtaskCount]}
-                    onValueChange={(value) => setSubtaskCount(value[0])}
-                  />
-                  <div className="text-center">{subtaskCount}</div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={addGeneratedSubtasks}>Generate</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-            <Collapsible
-              open={isJsonOpen}
-              onOpenChange={setIsJsonOpen}
-              className="mt-8 border rounded-md"
-            >
-              <CollapsibleTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="flex justify-between w-full"
-                >
-                  <span>View JSON Data</span>
-                  {isJsonOpen ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="p-4">
-                <div className="flex justify-end mb-2">
-                  <Button onClick={copyToClipboard} variant="outline" size="sm">
-                    {isCopied ? (
-                      <Check className="h-4 w-4 mr-2" />
-                    ) : (
-                      <Copy className="h-4 w-4 mr-2" />
-                    )}
-                    {isCopied ? "Copied!" : "Copy"}
-                  </Button>
-                </div>
-                <ScrollArea className="h-[200px] w-full overflow-auto bg-transparent">
-                  <p className="p-4 rounded-md w-full overflow-x-auto font-mono whitespace-pre">
-                    {getFormattedData()}
-                  </p>
-                  <ScrollBar orientation="horizontal" />
-                </ScrollArea>
-              </CollapsibleContent>
-            </Collapsible>
+              onClose={() => setBreakdownTask(null)}
+              task={breakdownTask}
+              subtaskCount={subtaskCount}
+              setSubtaskCount={setSubtaskCount}
+              addGeneratedSubtasks={addGeneratedSubtasks}
+            />
+
+            <JsonViewer
+              isOpen={isJsonOpen}
+              toggleOpen={setIsJsonOpen}
+              jsonData={getFormattedData()}
+              copyToClipboard={copyToClipboard}
+              isCopied={isCopied}
+            />
           </div>
         </motion.div>
       </AuroraBackground>
     </div>
   );
-}
+};
+
+export default TaskManager;
