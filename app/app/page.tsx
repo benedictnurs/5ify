@@ -1,4 +1,3 @@
-// components/TaskManager.tsx
 'use client';
 
 import { useEffect, useState } from "react";
@@ -11,7 +10,7 @@ import TaskList from "@/components/task/TaskList";
 import BreakdownDialog from "@/components/task/BreakdownDialog";
 import JsonViewer from "@/components/task/JsonViewer";
 import { Task, generateSubtasks } from "@/app/types";
-import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { useUser} from "@clerk/nextjs";
 
 const TaskManager: React.FC = () => {
   const { isSignedIn, user } = useUser();
@@ -162,7 +161,6 @@ const TaskManager: React.FC = () => {
           collapsed: false,
         }));
 
-        // Update the tasks with the newly generated subtasks, ensuring no more than 5 subtasks in total
         const updatedTasks = tasks.map((task) =>
           task._id === breakdownTask._id
             ? {
@@ -173,9 +171,7 @@ const TaskManager: React.FC = () => {
         );
 
         setTasks(updatedTasks);
-        updateTasks(updatedTasks); // Save to backend
-
-        // Reset breakdown task
+        updateTasks(updatedTasks);
         setBreakdownTask(null);
       } catch (error) {
         console.error("Error adding generated subtasks:", error);
