@@ -2,7 +2,7 @@
   <h1 align="center">5ify</h1>
 </a>
 
-<p align="center">
+<p>
   According to experts, anyone can complete a task if broken down into around 5 steps. Source? I'm the expert. My first time using TypeScript super deeply so I used some "outside sources". I learned a lot on CRUD, Webhooks and REST endpoints and integrated AI into my projects. 
 </p>
 
