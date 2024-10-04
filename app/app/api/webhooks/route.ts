@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase, { isMongoConnected } from '@/app/lib/mongoose';
 import User from '@/app/models/User';
 
-export const config = {
-  runtime: 'nodejs', // Use 'nodejs' runtime if 'svix' isn't compatible with 'edge'
-};
+export const runtime = "nodejs"
 
 /**
  * Handles POST requests for Clerk webhooks.
