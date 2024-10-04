@@ -35,7 +35,11 @@ const TaskManager: React.FC = () => {
     if (isSignedIn && authorId) {
       fetchTasks();
     } else {
-      setTasks([]); // Clear tasks if not signed in
+      setTasks([
+        { _id: "1", text: "Cook a healthy meal", completed: false, subtasks: [], collapsed: false },
+        { _id: "2", text: "Go to the gym", completed: false, subtasks: [], collapsed: false },
+        { _id: "3", text: "Study and do homework", completed: false, subtasks: [], collapsed: false },
+      ]); // Initial tasks
     }
   }, [isSignedIn, authorId]);
 

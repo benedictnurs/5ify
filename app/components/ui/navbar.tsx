@@ -2,8 +2,8 @@
 import React from "react";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useUser, SignOutButton } from '@clerk/nextjs'; // Import Clerk's user and sign-out hook
-import { PersonIcon, GitHubLogoIcon, ExitIcon } from "@radix-ui/react-icons"; // Importing icons
+import { useUser, SignOutButton } from '@clerk/nextjs';
+import { PersonIcon, GitHubLogoIcon, ExitIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/modetoggle";
 
@@ -25,7 +25,6 @@ const NavBar: React.FC = () => {
           </Button>
         </Link>
 
-        {/* Check if user is signed in, and show corresponding icon */}
         {isSignedIn ? (
           <SignOutButton>
             <Button size="icon" variant="ghost">

@@ -15,9 +15,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
-import NavBar from "@/components/ui/navbar"; // Importing NavBar
-import { AuroraBackground } from "@/components/ui/aurora-background"; // Importing AuroraBackground
-import { motion } from "framer-motion"; // Importing motion
+import NavBar from "@/components/ui/navbar";
+import { AuroraBackground } from "@/components/ui/aurora-background";
+import { motion } from "framer-motion";
 
 export default function SignUpPage() {
   return (
