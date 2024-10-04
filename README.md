@@ -3,9 +3,11 @@
 </a>
 
 <p align="center">
-  According to experts, anyone can complete a task if broken down into around 5 steps. Source? I'm the expert.
+  According to experts, anyone can complete a task if broken down into around 5 steps. Source? I'm the expert. My first time using TypeScript super deeply so I used some "outside sources". I learned a lot on CRUD, Webhooks and REST endpoints and integrated AI into my projects. 
 </p>
 
+<h1>How it Works</h1>
+Listens for change and automatically updates the database I didn't want to create crazy schemas so I made the JSON into a str and a JSON again to map it accordingly.
 <br/>
 
 ## Introduction
