@@ -7,7 +7,7 @@
 </p>
 
 <h1>How it Works</h1>
-Listens for change and automatically updates the database I didn't want to create crazy schemas so I made the JSON into a str and a JSON again to map it accordingly.
+Listens for change and automatically updates the database I didn't want to create crazy schemas so I made the JSON into a str value in the user schema and then converted it to a JSON again to map it accordingly. It uses Google Gemini API to break down tasks and return a list that gets formatted into a JSON array to send to the frontend accordingly.
 <br/>
 
 ## Introduction
