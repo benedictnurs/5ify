@@ -1,4 +1,3 @@
-// app/api/tasks/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import connectToDatabase, { isMongoConnected } from '@/app/lib/mongoose';

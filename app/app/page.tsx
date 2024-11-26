@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -10,7 +10,8 @@ import TaskList from "@/components/task/TaskList";
 import BreakdownDialog from "@/components/task/BreakdownDialog";
 import JsonViewer from "@/components/task/JsonViewer";
 import { Task, generateSubtasks } from "@/app/types";
-import { useUser} from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import Level from "@/components/task/Level";
 
 const TaskManager: React.FC = () => {
   const { isSignedIn, user } = useUser();
@@ -21,10 +22,10 @@ const TaskManager: React.FC = () => {
     _id: string;
     parentId?: string;
   } | null>(null);
+  const [currentLevel, setCurrentLevel] = useState(3);
   const [editText, setEditText] = useState("");
   const [isJsonOpen, setIsJsonOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-
   const [tasks, setTasks] = useState<Task[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,9 +37,27 @@ const TaskManager: React.FC = () => {
       fetchTasks();
     } else {
       setTasks([
-        { _id: "1", text: "Cook a healthy meal", completed: false, subtasks: [], collapsed: false },
-        { _id: "2", text: "Go to the gym", completed: false, subtasks: [], collapsed: false },
-        { _id: "3", text: "Study and do homework", completed: false, subtasks: [], collapsed: false },
+        {
+          _id: "1",
+          text: "Cook a healthy meal",
+          completed: false,
+          subtasks: [],
+          collapsed: false,
+        },
+        {
+          _id: "2",
+          text: "Practice doing LeetCode",
+          completed: false,
+          subtasks: [],
+          collapsed: false,
+        },
+        {
+          _id: "3",
+          text: "Make a CS project",
+          completed: false,
+          subtasks: [],
+          collapsed: false,
+        },
       ]); // Initial tasks
     }
   }, [isSignedIn, authorId]);
@@ -56,6 +75,12 @@ const TaskManager: React.FC = () => {
       console.error("Error fetching tasks:", err);
       setError("An unexpected error occurred");
     }
+  };
+
+  // Adds the intestinal level to the task
+  const handleLevelChange = (value: number) => {
+    setCurrentLevel(value);
+    console.log(`Slider level updated to: ${value}`);
   };
 
   // Function to update tasks in the backend
@@ -152,11 +177,12 @@ const TaskManager: React.FC = () => {
         // Pass the combined subtasks to the generateSubtasks function
         const newSubtasks = await generateSubtasks(
           combinedSubtaskFlatten,
+          currentLevel,
           breakdownTask.text,
           subtaskCount
         );
 
-        // Format the newly generated subtasks
+        // Format the newly generated subtasks, maps it to our original Task
         const formattedSubtasks = newSubtasks.map((subtask) => ({
           _id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
           text: subtask,
@@ -186,7 +212,9 @@ const TaskManager: React.FC = () => {
   const startEditing = (taskId: string, parentId?: string) => {
     setEditingTask({ _id: taskId, parentId });
     const taskToEdit = parentId
-      ? tasks.find((t) => t._id === parentId)?.subtasks.find((s) => s._id === taskId)
+      ? tasks
+          .find((t) => t._id === parentId)
+          ?.subtasks.find((s) => s._id === taskId)
       : tasks.find((t) => t._id === taskId);
     setEditText(taskToEdit?.text || "");
   };
@@ -257,13 +285,15 @@ const TaskManager: React.FC = () => {
               setNewTask={setNewTask}
               addTask={addTask}
             />
-
             {error ? (
               <div className="flex items-center justify-center text-red-500 mb-4">
                 Error: {error}
               </div>
             ) : null}
-
+            <div>
+              <h1 className="my-3 font-semibold">Current Detail Level: {currentLevel}</h1>
+              <Level level={handleLevelChange} />
+            </div>{" "}
             <ScrollArea className="sm:h-[400px] h-[300px] pr-4">
               <TaskList
                 tasks={tasks}
@@ -279,7 +309,6 @@ const TaskManager: React.FC = () => {
                 openBreakdownModal={openBreakdownModal}
               />
             </ScrollArea>
-
             <BreakdownDialog
               open={breakdownTask !== null}
               onClose={() => setBreakdownTask(null)}
@@ -288,7 +317,6 @@ const TaskManager: React.FC = () => {
               setSubtaskCount={setSubtaskCount}
               addGeneratedSubtasks={addGeneratedSubtasks}
             />
-
             <JsonViewer
               isOpen={isJsonOpen}
               toggleOpen={setIsJsonOpen}
