@@ -291,9 +291,9 @@ const TaskManager: React.FC = () => {
               </div>
             ) : null}
             <div>
-              <h1 className="my-3 font-semibold">Current Detail Level: {currentLevel}</h1>
+              <h1 className="my-3 font-semibold">Detail Level: {currentLevel}</h1>
               <Level level={handleLevelChange} />
-            </div>{" "}
+            </div>
             <ScrollArea className="sm:h-[400px] h-[300px] pr-4">
               <TaskList
                 tasks={tasks}

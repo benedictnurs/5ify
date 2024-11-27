@@ -2,13 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs'
+import { ClerkProvider, SignedIn, SignedOut, UserButton, useSignIn, useSignUp } from '@clerk/nextjs'
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +20,8 @@ export const metadata: Metadata = {
   title: "5ify",
   description: "5 steps to complete any task",
 };
+
+
 
 export default function RootLayout({
   children,
