@@ -1,4 +1,3 @@
-// app/api/webhook/route.ts
 import { Webhook } from 'svix';
 import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase, { isMongoConnected } from '@/app/lib/mongoose';

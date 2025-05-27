@@ -6,7 +6,6 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 export async function POST(request: Request) {
   try {
     const { task, subtaskFlatten, count, intensity } = await request.json();
-    console.log("Request:", { task, subtaskFlatten, count });
     if (typeof task !== "string" || typeof count !== "number") {
       console.error("invalid", { task, count });
       return NextResponse.json({ error: "invalid" }, { status: 400 });
@@ -19,7 +18,7 @@ export async function POST(request: Request) {
     // Using Langchain to generate subtasks based on the input by structuring the output through chaining the prompt, model, and output parser
     const chatModel = new ChatGoogleGenerativeAI({
       apiKey: GoogleKey,
-      modelName: "gemini-1.5-pro",
+      modelName: "gemini-2.0-flash",
     });
     const prompt = ChatPromptTemplate.fromMessages([
       {
@@ -57,7 +56,7 @@ Input values:
 - Detail level: {intensity} (1 = very brief, 5 = highly detailed)
 - Number of subtasks: {count}
 
-Output ONLY the JSON array of strings.
+Output ONLY the JSON array of strings. DO NOT include any additional text, explanations, or formatting. 
       `,
       },
     ]);
@@ -73,7 +72,18 @@ Output ONLY the JSON array of strings.
 
     // Parsing the response to get the subtasks to output to the frontend
     let subtasks: string[] = [];
-    subtasks = JSON.parse(response);
+
+    try {
+      const cleaned = response
+        .trim()
+        .replace(/^```json\s*/i, "")  // Remove starting ```json
+        .replace(/```$/, "");         // Remove ending ```
+        
+      subtasks = JSON.parse(cleaned);
+    } catch (parseError) {
+      console.error("Invalid LLM response:", response);
+      throw new Error("LLM returned invalid JSON. Cleaned attempt also failed.");
+    }
     return NextResponse.json({ subtasks: subtasks });
 
   } catch (error: any) {
