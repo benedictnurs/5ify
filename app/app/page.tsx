@@ -317,13 +317,6 @@ const TaskManager: React.FC = () => {
               setSubtaskCount={setSubtaskCount}
               addGeneratedSubtasks={addGeneratedSubtasks}
             />
-            <JsonViewer
-              isOpen={isJsonOpen}
-              toggleOpen={setIsJsonOpen}
-              jsonData={getFormattedData()}
-              copyToClipboard={copyToClipboard}
-              isCopied={isCopied}
-            />
           </div>
         </motion.div>
       </AuroraBackground>
